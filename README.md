@@ -6,10 +6,15 @@ URI: http://localhost:8080/api/v1/destinations?search={name}
 Method: GET
 
 Example: http://localhost:8080/api/v1/destinations?search=Buenos Aires, Argentina 
-```
+```  
+
 ### Instalacion
 
-Pasos para la instalacion:   
+## Dependencias
+    - PostgreSQL version 12.0
+    - Golang version 1.12.6
+
+## Pasos para la instalacion:   
     1. Clonar el proyecto  https://github.com/davidnastasi/flights-company.git
     2. Crear ejecutable con el comando go build -o ./bin/app ./cmd/flights-company/main.go  
     3. Ejecutar el script schema en una base de datos PostgreSQL
@@ -22,9 +27,7 @@ Pasos para la instalacion:
             - APP_RESERVATION_ENDPOINT: endpoint reservas [ default "https://brubank-flights.herokuapp.com/flight-reservations" ]
     
    
-### Decisiones de arquitectura
-
-
+### Decisiones de arquitectura:
 - Se ha decidido utilizar una base de datos relacional (PostgreSQL) para almacenar cada una de las reservas que obtenidas del endpoint. 
 - Para obtener las reservas se ha utilizado un cron que se ejecuta cada 15 segundos y almacenarlas en la base de datos.
 - La tabla en la base de datos posee una estructura de dos tablas en la primera se almacena cada una de las ciudades y en la 

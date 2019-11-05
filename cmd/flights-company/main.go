@@ -26,18 +26,18 @@ func main() {
 		v1.GET("/destinations", api.GetDestinations)
 	}
 
-	//config.Config.DB, config.Config.DBErr = gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=postgres password=postgres sslmode=disable")
-	config.Config.DB, config.Config.DBErr = gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=flights password=s3cret sslmode=disable")
+
+	loadConfig()
+
+	config.Config.DB, config.Config.DBErr = gorm.Open("postgres", config.Config.DSN)
 	if config.Config.DBErr != nil {
 		panic(config.Config.DBErr)
 	}
 
-	config.Config.FoursquareClientId= getEnv("client_id", CLIENT_ID)
-	config.Config.FoursquareClientSecret= getEnv("client_secret", CLIENT_SECRET)
 
 	cronJob := cron.New()
 
-	_, err := cronJob.AddFunc("@every 10s", func(){
+	_, err := cronJob.AddFunc("@every 5s", func(){
 		if err := reservation.GetAll() ; err != nil {
 			log.Println(err)
 		}
@@ -51,12 +51,20 @@ func main() {
 	defer cronJob.Stop()
 	defer config.Config.DB.Close()
 
-	err = r.Run(":8080")
+	err = r.Run(config.Config.WebServer)
 	if err != nil {
 		panic(err)
 	}else{
 		log.Println("Server started successfully")
 	}
+}
+
+func loadConfig() {
+	config.Config.WebServer = getEnv("APP_SERVER_URL", ":8080")
+	config.Config.DSN = getEnv("APP_DB_DSN", "host=localhost port=5432 user=postgres dbname=flights password=s3cret sslmode=disable" )
+	config.Config.FoursquareClientId= getEnv("APP_CLIENT_ID", CLIENT_ID)
+	config.Config.FoursquareClientSecret= getEnv("APP_CLIENT_SECRET", CLIENT_SECRET)
+	config.Config.ReservationsEndpoint = getEnv("APP_RESERVATION_ENDPOINT", "https://brubank-flights.herokuapp.com/flight-reservations")
 }
 
 func getEnv(key, fallback string) string {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/davidnastasi/flights-company/cmd/flights-company/config"
 	_ "github.com/davidnastasi/flights-company/cmd/flights-company/models"
 	"github.com/davidnastasi/flights-company/cmd/flights-company/repository"
 	"github.com/davidnastasi/flights-company/cmd/flights-company/services/reservation/dto"
@@ -15,7 +16,7 @@ import (
 
 func GetAll() error {
 
-	resp, err := http.Get("https://brubank-flights.herokuapp.com/flight-reservations")
+	resp, err := http.Get(config.Config.ReservationsEndpoint)
 	if err != nil {
 		return  err
 	}
@@ -34,7 +35,7 @@ func GetAll() error {
 		return err
 	}
 
- 	err = (&repository.PostgreSQL{}).Save(reserves)
+ 	err = repository.NewPostgreSQL().Save(reserves)
 	if err != nil {
 		return err
 	}

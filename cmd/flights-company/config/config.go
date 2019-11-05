@@ -10,12 +10,15 @@ type appConfig struct {
 	DB *gorm.DB
 	// the error thrown be GORM when using DB ORM object
 	DBErr error
-	// the server port. Defaults to 8080
-	ServerPort int `mapstructure:"server_port"`
 	// the data source name (DSN) for connecting to the database. required.
-	DSN string `mapstructure:"dsn"`
+	DSN string
+	// the server port. Defaults to 8080
+	WebServer string
 	// Foursquare client id
 	FoursquareClientId string
 	// Foursquare client secreat
 	FoursquareClientSecret string
+	// Endpoint reserves
+	ReservationsEndpoint string
+
 }

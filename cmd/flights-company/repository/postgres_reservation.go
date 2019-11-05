@@ -9,6 +9,9 @@ import (
 
 type PostgreSQL struct {}
 
+func NewPostgreSQL() *PostgreSQL {
+	return &PostgreSQL{}
+}
 
 // Get obtiene todas las reservas
 func (p *PostgreSQL) GetAll(location string) ([]*dto.ReservationDTO, error) {

@@ -14,5 +14,8 @@ type appConfig struct {
 	ServerPort int `mapstructure:"server_port"`
 	// the data source name (DSN) for connecting to the database. required.
 	DSN string `mapstructure:"dsn"`
-
+	// Foursquare client id
+	FoursquareClientId string
+	// Foursquare client secreat
+	FoursquareClientSecret string
 }

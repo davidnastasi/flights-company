@@ -2,16 +2,18 @@ package models
 
 import "time"
 
-// Reserve estructura para la reserva
-type Reserve struct {
+
+// Reservation estructura para la reserva
+type Reservation struct {
 	Date time.Time `gorm:"column:date" json:"date"`
-	Destination string `gorm:"column:destination" json:"destination"`
-	ReservationId string `gorm:"column:reservationId" json:"reservationId"`
+	LocationId int64 `gorm:"column:location_id"`
+	Location *Location `json:"location"`
+	ReservationId string `gorm:"column:reservation" json:"reservation"`
 }
 
-// NewReserve construye un nuevo reserva
-func NewReserve(date time.Time, destination string, reservationId string) *Reserve {
-	return &Reserve{Date: date, Destination: destination, ReservationId: reservationId}
+// NewReservation construye un nuevo reserva
+func NewReservation(date time.Time, locationId int64, location *Location, reservationId string) *Reservation {
+	return &Reservation{Date: date, LocationId: locationId, Location: location, ReservationId: reservationId}
 }
 
 

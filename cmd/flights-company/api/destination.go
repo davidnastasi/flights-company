@@ -1,13 +1,14 @@
 package api
 
 import (
-	"github.com/davidnastasi/flights-company/cmd/flights-company/services"
+	"github.com/davidnastasi/flights-company/cmd/flights-company/repository"
+	"github.com/davidnastasi/flights-company/cmd/flights-company/services/destination"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 
-var service = services.NewDestinationService()
+var service = destination.NewDestinationService(&repository.PostgreSQL{})
 
 // GetDestinations get reserves
 func GetDestinations(c *gin.Context){

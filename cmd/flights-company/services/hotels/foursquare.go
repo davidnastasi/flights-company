@@ -1,17 +1,15 @@
-package services
+package hotels
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/davidnastasi/flights-company/cmd/flights-company/config"
 	"github.com/davidnastasi/flights-company/cmd/flights-company/models"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 )
-
-const CLIENT_ID  = "HACVIHTUOMFKVK5HWQ0J0JCOKQAA2CSAVFS0LFQVN14EESS2"
-const CLIENT_SECRET = "50ITRVSKRB1GH2YWOBBQWZS5BEDVEIWN3Z2YABJEI454V2JZ"
 
 func GetHotels(destination string) ([]models.Hotel, error) {
 	query, err := generateQuery(destination)
@@ -23,6 +21,10 @@ func GetHotels(destination string) ([]models.Hotel, error) {
 	if err != nil {
 		return nil , err
 	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(fmt.Sprintf("Can't get hotels from server. Status Code: %v Query: %v", resp.StatusCode, query))
+	}
+
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -44,12 +46,12 @@ func generateQuery(destination string) (string, error) {
 	params.Add("near", destination)
 	params.Add("intent", "browse")
 	params.Add("query", "hotel")
-	params.Add("client_id", CLIENT_ID)
-	params.Add("client_secret", CLIENT_SECRET)
+	params.Add("client_id", config.Config.FoursquareClientId)
+	params.Add("client_secret", config.Config.FoursquareClientSecret)
 	params.Add("v", "20190709")
 
 	baseUrl.RawQuery = params.Encode() // Escape Query Parameters
-	log.Println(baseUrl.String())
+	//log.Println(baseUrl.String())
 
 	return baseUrl.String(),nil
 }

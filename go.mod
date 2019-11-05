@@ -8,5 +8,6 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/robfig/cron/v3 v3.0.0
+	github.com/stretchr/testify v1.3.0
 
 )

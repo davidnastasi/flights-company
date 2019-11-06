@@ -2,7 +2,7 @@
 
 ### API
 ```
-URI: http://localhost:8080/api/v1/destinations?search={name}
+URI: http://{address}:{port}/api/v1/destinations?search={name}
 Method: GET
 
 Example: http://localhost:8080/api/v1/destinations?search=Buenos Aires, Argentina 
